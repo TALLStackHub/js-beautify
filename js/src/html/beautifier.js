@@ -415,7 +415,9 @@ Beautifier.prototype.beautify = function() {
         c = decodeURIComponent(c);
         c = c.replace(/&#39;/g, "'");
         c = c.replace(/&#34;/g, '"');
-        c = c.replace(/(^[ \t]*|[ \t]*$)/g, ' ');
+        if (!c.startsWith('--')){
+          c = c.replace(/(^[ \t]*|[ \t]*$)/g, ' ');
+        }
     }
     return "{{" + c + "}}";
   });
