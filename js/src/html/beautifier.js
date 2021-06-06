@@ -240,7 +240,7 @@ function Beautifier(source_text, options, js_beautify, css_beautify) {
   // BEGIN
   //Wrapper function to invoke all the necessary constructors and deal with the output.
   source_text = source_text || '';
-
+  //{{ blade }}
   source_text = source_text.replace(/\{\{((?:(?!\}\}).)+)\}\}/g, function (m, c) {
       if (c) {
           c = c.replace(/(^[ \t]*|[ \t]*$)/g, '');
@@ -250,6 +250,17 @@ function Beautifier(source_text, options, js_beautify, css_beautify) {
       }
       return "{{" + c + "}}";
   });
+  //{!! Unescaped blade !!}
+  source_text = source_text.replace(/\{\!!((?:(?!\!!\}).)+)\!!\}/g, function (m, c) {
+      if (c) {
+          c = c.replace(/(^[ \t]*|[ \t]*$)/g, '');
+          c = c.replace(/'/g, '&#39;');
+          c = c.replace(/"/g, '&#34;');
+          c = encodeURIComponent(c);
+      }
+      return "{!!" + c + "!!}";
+  });
+  // @directives
   source_text = source_text.replace(/^[ \t]*@([a-z]+)([^\r\n]*)$/gim, function (m, d, c) {
       var ce = c;
       if (ce) {
@@ -296,6 +307,8 @@ function Beautifier(source_text, options, js_beautify, css_beautify) {
           default:
               if (d.startsWith('end')) {
                   return "</blade " + d + ce + ">";
+              } else if (d.startsWith('livewire')){
+                  return "<blade " + d + ce + "/>";
               } else {
                   return "<blade " + d + ce + ">";
               }
@@ -381,7 +394,6 @@ Beautifier.prototype.beautify = function() {
   var sweet_code = printer._output.get_code(eol);
 
   // BEGIN
-  sweet_code = sweet_code.replace(/[\r\n\t ]+$/, '');
   sweet_code = sweet_code.replace(/.*(<blade tempOpenTag>).*\n/g, '');
   sweet_code = sweet_code.replace(/^([ \t]*)<\/?blade ([a-z]+)\|?([^>\/]+)?\/?>$/gim, function (m, s, d, c) {
     if (c) {
@@ -395,7 +407,7 @@ Beautifier.prototype.beautify = function() {
     if (!s) {
         s = "";
     }
-    return s + "@" + d + c;
+    return s + "@" + d + c.trim();
   });
   sweet_code = sweet_code.replace(/\{\{((?:(?!\}\}).)+)\}\}/g, function (m, c) {
     if (c) {
@@ -406,8 +418,15 @@ Beautifier.prototype.beautify = function() {
     }
     return "{{" + c + "}}";
   });
-  sweet_code = sweet_code + eol;
-
+  sweet_code = sweet_code.replace(/\{\!!((?:(?!\}\}).)+)\!!\}/g, function (m, c) {
+    if (c) {
+        c = decodeURIComponent(c);
+        c = c.replace(/&#39;/g, "'");
+        c = c.replace(/&#34;/g, '"');
+        c = c.replace(/(^[ \t]*|[ \t]*$)/g, ' ');
+    }
+    return "{!!" + c + "!!}";
+  });
   // END
 
   return sweet_code;
