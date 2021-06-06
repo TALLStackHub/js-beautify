@@ -1,106 +1,34 @@
-# JS Beautifier
-![CI](https://github.com/beautify-web/js-beautify/workflows/CI/badge.svg)
-
-[![PyPI version](https://img.shields.io/pypi/v/jsbeautifier.svg)](https://pypi.python.org/pypi/jsbeautifier)
-[![CDNJS version](https://img.shields.io/cdnjs/v/js-beautify.svg)](https://cdnjs.com/libraries/js-beautify)
-[![NPM @latest](https://img.shields.io/npm/v/js-beautify.svg)](https://www.npmjs.com/package/js-beautify)
-[![NPM @next](https://img.shields.io/npm/v/js-beautify/next.svg)](https://www.npmjs.com/package/js-beautify?activeTab=versions)
-
-[![Join the chat at https://gitter.im/beautify-web/js-beautify](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/beautify-web/js-beautify?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-[![Twitter Follow](https://img.shields.io/twitter/follow/js_beautifier.svg?style=social&label=Follow)](https://twitter.com/intent/user?screen_name=js_beautifier)
-
-[![NPM stats](https://nodei.co/npm/js-beautify.svg?downloadRank=true&downloads=true)](https://www.npmjs.org/package/js-beautify) [![Greenkeeper badge](https://badges.greenkeeper.io/beautify-web/js-beautify.svg)](https://greenkeeper.io/)
+# JS Beautifier with blade
 
 
-This little beautifier will reformat and re-indent bookmarklets, ugly
-JavaScript, unpack scripts packed by Dean Edward’s popular packer,
-as well as partly deobfuscate scripts processed by the npm package
-[javascript-obfuscator](https://github.com/javascript-obfuscator/javascript-obfuscator).
+[![NPM @latest](https://img.shields.io/npm/v/js-beautify-with-blade.svg)](https://www.npmjs.com/package/js-beautify-with-blade)
 
-Open [beautifier.io](https://beautifier.io/) to try it out.  Options are available via the UI.
+[![NPM stats](https://nodei.co/npm/js-beautify-with-blade.svg?downloadRank=true&downloads=true)](https://www.npmjs.org/package/js-beautify-with-blade)
+
+# About this package
+It's a forke from [js-beautify](https://github.com/beautify-web/js-beautify) but with full support to [Blade](https://laravel.com/docs/blade)
+
+useing html-beautify with Blade files working as sharm
 
 # Contributors Needed
-I'm putting this front and center above because existing owners have very limited time to work on this project currently.
-This is a popular project and widely used but it desperately needs contributors who have time to commit to fixing both
-customer facing bugs and underlying problems with the internal design and implementation.
-
-If you are interested, please take a look at the [CONTRIBUTING.md](https://github.com/beautify-web/js-beautify/blob/main/CONTRIBUTING.md) then fix an issue marked with the ["Good first issue"](https://github.com/beautify-web/js-beautify/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) label and submit a PR. Repeat as often as possible.  Thanks!
-
+Please feel free to test & contribute 
 
 # Installation
 
-You can install the beautifier for node.js or python.
-
-## Node.js JavaScript
-
-You may install the NPM package `js-beautify`. When installed globally, it provides an executable `js-beautify` script. As with the Python script, the beautified result is sent to `stdout` unless otherwise configured.
+You may install the NPM package `js-beautify-with-blade`. When installed globally, it provides an executable `js-beautify` script.
 
 ```bash
-$ npm -g install js-beautify
+$ npm -g install js-beautify-with-blade
 $ js-beautify foo.js
 ```
 
-You can also use `js-beautify` as a `node` library (install locally, the `npm` default):
+You can also use `js-beautify-with-blade` as a `node` library (install locally, the `npm` default):
 
 ```bash
-$ npm install js-beautify
+$ npm install js-beautify-with-blade
 ```
-
-## Node.js JavaScript (vNext)
-
-The above install the latest stable release. To install beta or RC versions:
-
-```bash
-$ npm install js-beautify@next
-```
-
-## Web Library
-The beautifier can be added on your page as web library.
-
-JS Beautifier is hosted on two CDN services: [cdnjs](https://cdnjs.com/libraries/js-beautify) and rawgit.
-
-To pull the latest version from one of these services include one set of the script tags below in your document:
-```html
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.13.13/beautify.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.13.13/beautify-css.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.13.13/beautify-html.js"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.13.13/beautify.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.13.13/beautify-css.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.13.13/beautify-html.min.js"></script>
-
-<script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.13/js/lib/beautify.js"></script>
-<script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.13/js/lib/beautify-css.js"></script>
-<script src="https://cdn.rawgit.com/beautify-web/js-beautify/v1.13.13/js/lib/beautify-html.js"></script>
-```
-
-Older versions are available by changing the version number.
-
-Disclaimer: These are free services, so there are [no uptime or support guarantees](https://github.com/rgrove/rawgit/wiki/Frequently-Asked-Questions#i-need-guaranteed-100-uptime-should-i-use-cdnrawgitcom).
-
-
-## Python
-To install the Python version of the beautifier:
-
-```bash
-$ pip install jsbeautifier
-```
-Unlike the JavaScript version, the Python version can only reformat JavaScript. It does not work against HTML or CSS files, but you can install _css-beautify_ for CSS:
-
-```bash
-$ pip install cssbeautifier
-```
-
 # Usage
-You can beautify javascript using JS Beautifier in your web browser, or on the command-line using node.js or python.
-
-## Web Browser
-Open [beautifier.io](https://beautifier.io/).  Options are available via the UI.
-
-## Web Library
-The script tags above expose three functions: `js_beautify`, `css_beautify`, and `html_beautify`.
-
-## Node.js JavaScript
+You can beautify javascript using JS Beautifier on the command-line using node.js .
 
 When installed globally, the beautifier provides an executable `js-beautify` script. The beautified result is sent to `stdout` unless otherwise configured.
 
@@ -113,7 +41,7 @@ To use `js-beautify` as a `node` library (after install locally), import and cal
 The configuration option names are the same as the CLI names but with underscores instead of dashes.  For example, `--indent-size 2 --space-in-empty-paren` would be `{ indent_size: 2, space_in_empty_paren: true }`.
 
 ```js
-var beautify = require('js-beautify').js,
+var beautify = require('js-beautify-with-blade').js,
     fs = require('fs');
 
 fs.readFile('foo.js', 'utf8', function (err, data) {
@@ -123,39 +51,9 @@ fs.readFile('foo.js', 'utf8', function (err, data) {
     console.log(beautify(data, { indent_size: 2, space_in_empty_paren: true }));
 });
 ```
-
-## Python
-After installing, to beautify using Python:
-
-```bash
-$ js-beautify file.js
-```
-
-Beautified output goes to `stdout` by default.
-
-To use `jsbeautifier` as a library is simple:
-
-```python
-import jsbeautifier
-res = jsbeautifier.beautify('your javascript string')
-res = jsbeautifier.beautify_file('some_file.js')
-```
-
-...or, to specify some options:
-
-```python
-opts = jsbeautifier.default_options()
-opts.indent_size = 2
-opts.space_in_empty_paren = True
-res = jsbeautifier.beautify('some javascript', opts)
-```
-
-The configuration option names are the same as the CLI names but with underscores instead of dashes.  The example above would be set on the command-line as `--indent-size 2 --space-in-empty-paren`.
-
-
 # Options
 
-These are the command-line flags for both Python and JS scripts:
+These are the command-line flags for JS scripts:
 
 ```text
 CLI Options:
@@ -198,7 +96,6 @@ Beautifier Options:
   --templating                      List of templating languages (auto,django,erb,handlebars,php,smarty) ["auto"] auto = none in JavaScript, all in html
 ```
 
-Which correspond to the underscored option keys for both library interfaces
 
 **defaults per CLI options**
 ```json
@@ -238,12 +135,6 @@ Which correspond to the underscored option keys for both library interfaces
   "space_before_conditional": true
 }
 ```
-
-Notice not all defaults are exposed via the CLI.  Historically, the Python and
-JS APIs have not been 100% identical. There are still a
-few other additional cases keeping us from 100% API-compatibility.
-
-
 ## Loading settings from environment or .jsbeautifyrc (JavaScript-Only)
 
 In addition to CLI arguments, you may pass config to the JS executable via:
