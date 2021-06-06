@@ -283,6 +283,7 @@ function Beautifier(source_text, options, js_beautify, css_beautify) {
           case 'method':
           case 'parent':
           case 'stack':
+          case 'props':
           case 'yield':
           case 'default':
               return "<blade " + d + ce + "/>";
@@ -395,7 +396,7 @@ Beautifier.prototype.beautify = function() {
 
   // BEGIN
   sweet_code = sweet_code.replace(/.*(<blade tempOpenTag>).*\n/g, '');
-  sweet_code = sweet_code.replace(/^([ \t]*)<\/?blade ([a-z]+)\|?([^>\/]+)?\/?>$/gim, function (m, s, d, c) {
+  sweet_code = sweet_code.replace(/^([ \t]*)<\/?blade\s*([a-z]+)\|?([^>\/]+)?\/?>$/gim, function (m, s, d, c) {
     if (c) {
         c = decodeURIComponent(c);
         c = c.replace(/&#39;/g, "'");
