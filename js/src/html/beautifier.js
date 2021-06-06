@@ -262,6 +262,9 @@ function Beautifier(source_text, options, js_beautify, css_beautify) {
   });
   // @directives
   source_text = source_text.replace(/^[ \t]*@([a-z]+)([^\r\n]*)$/gim, function (m, d, c) {
+      if(d === 'media'){
+        return m;
+      }
       var ce = c;
       if (ce) {
           ce = ce.replace(/'/g, '&#39;');
