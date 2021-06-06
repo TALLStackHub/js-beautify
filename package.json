@@ -1,42 +1,33 @@
 {
-  "_from": "js-beautify",
-  "_id": "js-beautify@1.13.13",
-  "_inBundle": false,
-  "_integrity": "sha512-oH+nc0U5mOAqX8M5JO1J0Pw/7Q35sAdOsM5W3i87pir9Ntx6P/5Gx1xLNoK+MGyvHk4rqqRCE4Oq58H6xl2W7A==",
-  "_location": "/js-beautify",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "tag",
-    "registry": true,
-    "raw": "js-beautify",
-    "name": "js-beautify",
-    "escapedName": "js-beautify",
-    "rawSpec": "",
-    "saveSpec": null,
-    "fetchSpec": "latest"
+  "name": "js-beautify-with-blade",
+  "version": "1.0.0",
+  "description": "A fork from js-beautify to support Blade templates",
+  "main": "js/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "_requiredBy": [
-    "#DEV:/",
-    "#USER",
-    "/blade-formatter"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThePlanet-Tech/js-beautify.git"
+  },
+  "keywords": [
+    "beautify",
+    "beautifier",
+    "code-quality",
+    "blade-formatter",
+    "blade-beautify"
   ],
-  "_resolved": "https://registry.npmjs.org/js-beautify/-/js-beautify-1.13.13.tgz",
-  "_shasum": "756907d1728f329f2b84c42efd56ad17514620bf",
-  "_spec": "js-beautify",
-  "_where": "/mnt/data/Projects/Bootstrap/boilerplate",
   "author": {
-    "name": "Einar Lielmanis",
-    "email": "einar@beautifier.io"
+    "name": "khaled sadek",
+    "email": "khaled@theplanet.tech"
   },
   "bin": {
     "css-beautify": "js/bin/css-beautify.js",
     "html-beautify": "js/bin/html-beautify.js",
     "js-beautify": "js/bin/js-beautify.js"
   },
+  "license": "MIT",
   "browserslist": "ie 11",
-  "bugs": {
-    "url": "https://github.com/beautify-web/js-beautify/issues"
-  },
   "bundleDependencies": false,
   "contributors": [
     {
@@ -84,7 +75,6 @@
     "nopt": "^5.0.0"
   },
   "deprecated": false,
-  "description": "beautifier.io for node",
   "devDependencies": {
     "benchmark": "^2.1.4",
     "codemirror": "^5.56.0",
@@ -112,19 +102,8 @@
     "js/index.js",
     "js/src/**/*"
   ],
-  "homepage": "https://beautifier.io/",
-  "keywords": [
-    "beautify",
-    "beautifier",
-    "code-quality"
-  ],
-  "license": "MIT",
-  "main": "js/index.js",
-  "name": "js-beautify",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/beautify-web/js-beautify.git"
+  "bugs": {
+    "url": "https://github.com/ThePlanet-Tech/js-beautify/issues"
   },
-  "scripts": {},
-  "version": "1.13.13"
+  "homepage": "https://github.com/ThePlanet-Tech/js-beautify#readme"
 }
