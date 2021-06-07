@@ -63,8 +63,10 @@ Contributions are needed and always welcome!
 - Created by Einar Lielmanis, einar@beautifier.io
 - Command-line for node.js by Daniel Stockman daniel.stockman@gmail.com
 - Maintained and expanded by Liam Newman bitwiseman@beautifier.io
+
 Thanks also to Jason Diamond, Patrick Hof, Nochum Sossonko, Andreas Schneider, Dave Vasilevsky, Vital Batmanov, Ron Baldwin, Gabriel Harrison, Chris J. Shull, Mathias Bynens, Vittorio Gambaletta and others.
 
 ### Blade support
 - Maintained and expanded by [Khaled Sadek](https://github.com/khaled-sadek)
+
 Many thanks to [fzldn](https://github.com/fzldn) for the idea and his [gist](https://gist.github.com/fzldn/a27973ff7e4c8e3738b0e06e525f7403)
