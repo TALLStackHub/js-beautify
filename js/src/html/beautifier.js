@@ -237,7 +237,26 @@ TagStack.prototype.indent_to_tag = function(tag_list) {
 };
 
 function Beautifier(source_text, options, js_beautify, css_beautify) {
-  // BEGIN
+  this._source_text = source_text || '';
+  options = options || {};
+  this._js_beautify = js_beautify;
+  this._css_beautify = css_beautify;
+  this._tag_stack = null;
+
+  // Allow the setting of language/file-type specific options
+  // with inheritance of overall settings
+  var optionHtml = new Options(options, 'html');
+
+  this._options = optionHtml;
+
+  this._is_wrap_attributes_force = this._options.wrap_attributes.substr(0, 'force'.length) === 'force';
+  this._is_wrap_attributes_force_expand_multiline = (this._options.wrap_attributes === 'force-expand-multiline');
+  this._is_wrap_attributes_force_aligned = (this._options.wrap_attributes === 'force-aligned');
+  this._is_wrap_attributes_aligned_multiple = (this._options.wrap_attributes === 'aligned-multiple');
+  this._is_wrap_attributes_preserve = this._options.wrap_attributes.substr(0, 'preserve'.length) === 'preserve';
+  this._is_wrap_attributes_preserve_aligned = (this._options.wrap_attributes === 'preserve-aligned');
+}
+Beautifier.prototype.prepare_blade = function(source_text){
   //Wrapper function to invoke all the necessary constructors and deal with the output.
   source_text = source_text || '';
   //{{ blade }}
@@ -318,27 +337,48 @@ function Beautifier(source_text, options, js_beautify, css_beautify) {
               }
       }
   });
-  // END
-  this._source_text = source_text || '';
-  options = options || {};
-  this._js_beautify = js_beautify;
-  this._css_beautify = css_beautify;
-  this._tag_stack = null;
 
-  // Allow the setting of language/file-type specific options
-  // with inheritance of overall settings
-  var optionHtml = new Options(options, 'html');
-
-  this._options = optionHtml;
-
-  this._is_wrap_attributes_force = this._options.wrap_attributes.substr(0, 'force'.length) === 'force';
-  this._is_wrap_attributes_force_expand_multiline = (this._options.wrap_attributes === 'force-expand-multiline');
-  this._is_wrap_attributes_force_aligned = (this._options.wrap_attributes === 'force-aligned');
-  this._is_wrap_attributes_aligned_multiple = (this._options.wrap_attributes === 'aligned-multiple');
-  this._is_wrap_attributes_preserve = this._options.wrap_attributes.substr(0, 'preserve'.length) === 'preserve';
-  this._is_wrap_attributes_preserve_aligned = (this._options.wrap_attributes === 'preserve-aligned');
+  return source_text;
 }
+Beautifier.prototype.return_blade = function(sweet_code){
+  sweet_code = sweet_code.replace(/.*(<blade tempOpenTag>).*\n/g, '');
+  sweet_code = sweet_code.replace(/^([ \t]*)<\/?blade\s*([a-z]+)\|?([^>\/]+)?\/?>$/gim, function (m, s, d, c) {
+    if (c) {
+        c = decodeURIComponent(c);
+        c = c.replace(/&#39;/g, "'");
+        c = c.replace(/&#34;/g, '"');
+        c = c.replace(/^[ \t]*/g, '');
+    } else {
+        c = "";
+    }
+    if (!s) {
+        s = "";
+    }
+    return s + "@" + d + c.trim();
+  });
+  sweet_code = sweet_code.replace(/\{\{((?:(?!\}\}).)+)\}\}/g, function (m, c) {
+    if (c) {
+        c = decodeURIComponent(c);
+        c = c.replace(/&#39;/g, "'");
+        c = c.replace(/&#34;/g, '"');
+        if (!c.startsWith('--')){
+          c = c.replace(/(^[ \t]*|[ \t]*$)/g, ' ');
+        }
+    }
+    return "{{" + c + "}}";
+  });
+  sweet_code = sweet_code.replace(/\{\!!((?:(?!\}\}).)+)\!!\}/g, function (m, c) {
+    if (c) {
+        c = decodeURIComponent(c);
+        c = c.replace(/&#39;/g, "'");
+        c = c.replace(/&#34;/g, '"');
+        c = c.replace(/(^[ \t]*|[ \t]*$)/g, ' ');
+    }
+    return "{!!" + c + "!!}";
+  });
 
+  return sweet_code;
+}
 Beautifier.prototype.beautify = function() {
 
   // if disabled, return the input unchanged.
@@ -346,7 +386,7 @@ Beautifier.prototype.beautify = function() {
     return this._source_text;
   }
 
-  var source_text = this._source_text;
+  var source_text = this.prepare_blade(this._source_text);
   var eol = this._options.eol;
   if (this._options.eol === 'auto') {
     eol = '\n';
@@ -397,45 +437,7 @@ Beautifier.prototype.beautify = function() {
   }
   var sweet_code = printer._output.get_code(eol);
 
-  // BEGIN
-  sweet_code = sweet_code.replace(/.*(<blade tempOpenTag>).*\n/g, '');
-  sweet_code = sweet_code.replace(/^([ \t]*)<\/?blade\s*([a-z]+)\|?([^>\/]+)?\/?>$/gim, function (m, s, d, c) {
-    if (c) {
-        c = decodeURIComponent(c);
-        c = c.replace(/&#39;/g, "'");
-        c = c.replace(/&#34;/g, '"');
-        c = c.replace(/^[ \t]*/g, '');
-    } else {
-        c = "";
-    }
-    if (!s) {
-        s = "";
-    }
-    return s + "@" + d + c.trim();
-  });
-  sweet_code = sweet_code.replace(/\{\{((?:(?!\}\}).)+)\}\}/g, function (m, c) {
-    if (c) {
-        c = decodeURIComponent(c);
-        c = c.replace(/&#39;/g, "'");
-        c = c.replace(/&#34;/g, '"');
-        if (!c.startsWith('--')){
-          c = c.replace(/(^[ \t]*|[ \t]*$)/g, ' ');
-        }
-    }
-    return "{{" + c + "}}";
-  });
-  sweet_code = sweet_code.replace(/\{\!!((?:(?!\}\}).)+)\!!\}/g, function (m, c) {
-    if (c) {
-        c = decodeURIComponent(c);
-        c = c.replace(/&#39;/g, "'");
-        c = c.replace(/&#34;/g, '"');
-        c = c.replace(/(^[ \t]*|[ \t]*$)/g, ' ');
-    }
-    return "{!!" + c + "!!}";
-  });
-  // END
-
-  return sweet_code;
+  return this.return_blade(sweet_code);
 };
 
 Beautifier.prototype._handle_tag_close = function(printer, raw_token, last_tag_token) {
