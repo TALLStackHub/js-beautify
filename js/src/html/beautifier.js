@@ -257,9 +257,7 @@ function Beautifier(source_text, options, js_beautify, css_beautify) {
   this._is_wrap_attributes_preserve_aligned = (this._options.wrap_attributes === 'preserve-aligned');
 }
 Beautifier.prototype.prepare_blade = function(source_text){
-  //Wrapper function to invoke all the necessary constructors and deal with the output.
   source_text = source_text || '';
-  //{{ blade }}
   source_text = source_text.replace(/\{\{((?:(?!\}\}).)+)\}\}/g, function (m, c) {
       if (c) {
           c = c.replace(/(^[ \t]*|[ \t]*$)/g, '');
@@ -269,7 +267,6 @@ Beautifier.prototype.prepare_blade = function(source_text){
       }
       return "{{" + c + "}}";
   });
-  //{!! Unescaped blade !!}
   source_text = source_text.replace(/\{\!!((?:(?!\!!\}).)+)\!!\}/g, function (m, c) {
       if (c) {
           c = c.replace(/(^[ \t]*|[ \t]*$)/g, '');
@@ -279,68 +276,67 @@ Beautifier.prototype.prepare_blade = function(source_text){
       }
       return "{!!" + c + "!!}";
   });
-  // @directives
   source_text = source_text.replace(/^[ \t]*@([a-z]+)([^\r\n]*)$/gim, function (m, d, c) {
       if(d === 'media'){
         return m;
       }
-      var ce = c;
-      if (ce) {
-          ce = ce.replace(/'/g, '&#39;');
-          ce = ce.replace(/"/g, '&#34;');
-          ce = "|" + encodeURIComponent(ce);
+      if (c) {
+          c = c.replace(/'/g, '&#39;');
+          c = c.replace(/"/g, '&#34;');
+          c = "|" + encodeURIComponent(c);
       }
       switch (d) {
           case 'break':
           case 'case':
           case 'continue':
           case 'csrf':
+          case 'default':
+          case 'each':
           case 'extends':
           case 'include':
           case 'includeFirst':
           case 'includeIf':
+          case 'includeUnless':
           case 'includeWhen':
           case 'inject':
           case 'json':
           case 'method':
           case 'parent':
-          case 'stack':
           case 'props':
+          case 'stack':
           case 'yield':
-          case 'default':
-              return "<blade " + d + ce + "/>";
-          case 'section':
-              if(c.match(/[ \t]*\([ \t]*['"][^'"]*['"][ \t]*\)/i)){
-                 return "<blade " + d + ce + ">";
-              } else {
-                 return "<blade " + d + ce + "/>";
-              }
+              return "<blade " + d + c + "/>";
           case 'show':
           case 'stop':
-              return "</blade " + d + ce + ">";
+              return "</blade " + d + c + ">";
+          case 'section':
+              if(c.match(/\|\(.*%2C.*\)/i)){
+                return "<blade " + d + c + "/>";
+              } else {
+                return "<blade " + d + c + ">";
+              }
           case 'empty':
               if(c.match(/\(/i)){
-                return "<blade " + d + ce + ">";
+                return "<blade " + d + c + ">";
               } else {
-                return "</blade " + d + ce + ">" + "<blade tempOpenTag>";
+                return "</blade " + d + c + ">" + "<blade tempOpenTag>";
               }
-          case 'else':
-          case 'elseif':
-              return "</blade " + d + ce + ">" + "<blade tempOpenTag>";
           default:
               if (d.startsWith('end')) {
-                  return "</blade " + d + ce + ">";
+                  return "</blade " + d + c + ">";
               } else if (d.startsWith('livewire')){
-                  return "<blade " + d + ce + "/>";
+                  return "<blade " + d + c + "/>";
+              } else if (d.startsWith('else')) {
+                  return "</blade " + d + c + ">" + "<blade tempOpenTag>";
               } else {
-                  return "<blade " + d + ce + ">";
+                  return "<blade " + d + c + ">";
               }
       }
   });
 
   return source_text;
 }
-Beautifier.prototype.return_blade = function(sweet_code){
+Beautifier.prototype.return_blade = function(sweet_code, printer){
   sweet_code = sweet_code.replace(/.*(<blade tempOpenTag>).*\n/g, '');
   sweet_code = sweet_code.replace(/^([ \t]*)<\/?blade\s*([a-z]+)\|?([^>\/]+)?\/?>$/gim, function (m, s, d, c) {
     if (c) {
@@ -437,7 +433,7 @@ Beautifier.prototype.beautify = function() {
   }
   var sweet_code = printer._output.get_code(eol);
 
-  return this.return_blade(sweet_code);
+  return this.return_blade(sweet_code, printer);
 };
 
 Beautifier.prototype._handle_tag_close = function(printer, raw_token, last_tag_token) {
