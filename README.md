@@ -48,7 +48,7 @@ run the above command in your project's root directory will beautify all the bla
   
 ## Roadmap
 
-- [ ] Add indendt for `@case`
+- [x] Add indendt for `@case`
 - [ ] Support single custom directive
 - [ ] Add options to customize space between `@` & directive
 

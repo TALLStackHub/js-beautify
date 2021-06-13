@@ -352,6 +352,14 @@ Beautifier.prototype.return_blade = function(sweet_code, printer){
     }
     return s + "@" + d + c.trim();
   });
+  sweet_code = sweet_code.replace(/(@case|@default)((?:(?!@break|@endswitch).|\n)+)(@break|@endswitch)$/gim, function addMoreIndent(m, s, c, t) {
+    var indent = printer._output.__indent_cache.__base_string + printer._output.__indent_cache.__indent_string;
+    c = c.replace(/\n/g, "\n" + indent);
+    if(t === "@endswitch"){
+      c = c.replace(new RegExp(indent + '$', 'gi'), printer._output.__indent_cache.__base_string);
+    }
+    return s + c + t;
+});
   sweet_code = sweet_code.replace(/\{\{((?:(?!\}\}).)+)\}\}/g, function (m, c) {
     if (c) {
         c = decodeURIComponent(c);
