@@ -1,6 +1,6 @@
 {
   "name": "js-beautify-with-blade",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A fork from js-beautify to support Blade templates",
   "main": "js/index.js",
   "scripts": {
