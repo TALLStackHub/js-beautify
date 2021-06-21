@@ -255,6 +255,7 @@ function Beautifier(source_text, options, js_beautify, css_beautify) {
   this._is_wrap_attributes_aligned_multiple = (this._options.wrap_attributes === 'aligned-multiple');
   this._is_wrap_attributes_preserve = this._options.wrap_attributes.substr(0, 'preserve'.length) === 'preserve';
   this._is_wrap_attributes_preserve_aligned = (this._options.wrap_attributes === 'preserve-aligned');
+  this._is_space_after_directive = (options.html.space_after_directive) ?? true
 }
 Beautifier.prototype.prepare_blade = function(source_text){
   source_text = source_text || '';
@@ -310,7 +311,7 @@ Beautifier.prototype.prepare_blade = function(source_text){
           case 'stop':
               return "</blade " + d + c + ">";
           case 'section':
-              if(c.match(/\|\(.*%2C.*\)/i)){
+              if(c.match(/\|[%20]*\(.*%2C.*\)/i)){
                 return "<blade " + d + c + "/>";
               } else {
                 return "<blade " + d + c + ">";
@@ -337,6 +338,7 @@ Beautifier.prototype.prepare_blade = function(source_text){
   return source_text;
 }
 Beautifier.prototype.return_blade = function(sweet_code, printer){
+  var _is_space_after_directive = this._is_space_after_directive;
   sweet_code = sweet_code.replace(/.*(<blade tempOpenTag>).*\n/g, '');
   sweet_code = sweet_code.replace(/^([ \t]*)<\/?blade\s*([a-z]+)\|?([^>\/]+)?\/?>$/gim, function (m, s, d, c) {
     if (c) {
@@ -349,6 +351,9 @@ Beautifier.prototype.return_blade = function(sweet_code, printer){
     }
     if (!s) {
         s = "";
+    }
+    if(c.trim() && _is_space_after_directive) {
+      d = d + " "
     }
     return s + "@" + d + c.trim();
   });
