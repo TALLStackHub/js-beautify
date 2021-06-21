@@ -38,6 +38,7 @@ run the above command in your project's root directory will beautify all the bla
 - Automatically Indents markup inside directives
 - Automatically add spacing to blade templating markers
 - Support all [HTML Beautifier Options](https://github.com/beautify-web/js-beautify#css--html)
+- To remove the space between `@` and the directive set `space_after_directive` to `false`
 
 
   
@@ -50,7 +51,7 @@ run the above command in your project's root directory will beautify all the bla
 
 - [x] Add indendt for `@case`
 - [ ] Support single custom directive
-- [ ] Add options to customize space between `@` & directive
+- [x] Add options to customize space between `@` & directive
 
   
 ## Contributing
